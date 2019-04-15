@@ -7,7 +7,7 @@ cd periodic
 pip install -r requirements.txt -t .
 
 cd ..
-./build <region> <lambda-bucket> <stack-name> <bucket> <key>
+./build.sh <region> <lambda-bucket> <stack-name> <bucket> <key>
 ```  
 WHERE:
 ```
