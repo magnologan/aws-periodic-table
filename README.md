@@ -1,4 +1,5 @@
 # aws-periodic-table
+Generate an HTML "Periodic Table of Amazon Web Services" by scraping srvice information from https://aws.amazon.com/products/. The build steps below will create a Lambda function the fires daily to regenerate the table and upload to an S3 bucket of your choice.
 
 TO BUILD:
 ```
