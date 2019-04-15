@@ -64,9 +64,10 @@ colors = ["#834187", "#878541", "#458741", "#874145",
 # Parse prefix and name
 def parse_name(name):
 
-    search = re.search( "(AWS|Amazon)*\s*(.*)\s*\(*", name.strip() )
+    search = re.search( "(AWS|Amazon)*\s*(.*)", name )
     prefix = search.group(1) or 'AWS'
     name = search.group(2)
+    name = name.split("(",2)[0].strip()
 
     return prefix, name
 
