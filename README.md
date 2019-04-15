@@ -11,8 +11,8 @@ cd ..
 ```  
 where:
 ```
-  region - is the AWS region you'll deply this stack to
-  lambda-bucket - is use as a staging area for the lambda function
+  region - is the AWS region you'll deploy this stack to
+  lambda-bucket - is used by cloudformation as a staging area for the lambda function
   stack-name - is the name you'd like to use for the cloudformation stack
   bucket - which S3 bucket would you like to copy the resulting HTML file to
   key - the name for the resulting HTML file (the S3 key)
