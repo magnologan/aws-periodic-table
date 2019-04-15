@@ -9,7 +9,7 @@ pip install -r requirements.txt -t .
 cd ..
 ./build <region> <lambda-bucket> <stack-name> <bucket> <key>
 ```  
-where:
+WHERE:
 ```
   region - is the AWS region you'll deploy this stack to
   lambda-bucket - is used by cloudformation as a staging area for the lambda function
