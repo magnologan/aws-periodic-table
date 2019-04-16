@@ -4,10 +4,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="utf-8">
 
+  {{#title}}<title>{{ title }}</title>{{/title}}
+  {{#description}}<meta name="description" content="{{description}}"/>{{/description}}
+  {{#website}}<link rel="canonical" href="{{website}}/"/>{{/website}}
 
-  <title>Periodic Table of Amazon Web Services</title>
-  <meta name="description" content="Periodic Table of Amazon Web Services"/>
-  
+  {{ > google }}
+  {{ > opengraph }}
+  {{ > twitter }}
+
+
   <style type="text/css">
     body {
       font-family: 'Yanone Kaffeesatz';
@@ -142,7 +147,7 @@
         {{#categories}}
         {{#services}}
         <div class="Service {{category}}" style="grid-column: {{column}}; grid-row: {{row}};" >
-          <a href="{{{link}}}" onclick="trackOutboundLink('{{{link}}}'); return false;" target="_blank">
+          <a href="{{{link}}}" {{#google-analytics}}onclick="trackOutboundLink('{{{link}}}'); return false;"{{/google-analytics}} target="_blank">
             <div class="Prefix">{{prefix}}</div>
             <div class="Symbol {{category}}">{{symbol}}</div>
             <div class="Name {{#long}}SmallName{{/long}} {{#reallong}}ReallySmallName{{/reallong}}">{{name}}</div>

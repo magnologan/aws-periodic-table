@@ -64,9 +64,10 @@ colors = ["#834187", "#878541", "#458741", "#874145",
 # Parse prefix and name
 def parse_name(name):
 
-    search = re.search( "(AWS|Amazon)*\s*(.*)\s*\(*", name.strip() )
+    search = re.search( "(AWS|Amazon)*\s*(.*)", name )
     prefix = search.group(1) or 'AWS'
     name = search.group(2)
+    name = name.split("(",2)[0].strip()
 
     return prefix, name
 
@@ -107,9 +108,16 @@ def create_symbol(symbols, name):
 
     return symbol
     
+title = "Jerry Hargrove | Periodic Table of Amazon Web Services"
+description = "Periodic Table of Amazon Web Services"
+website = "https://www.awsgeek.com"
+image = "https://www.awsgeek.com/images/AWS-Periodic-Table.png"
+google = "UA-106486526-1"
+twitter = "@awsgeek"
+
 def lambda_handler(event, context):
 
-  periodic = {'categories':[]}
+  periodic = {'categories':[], 'title':title, 'description':description, 'website':website, 'image': image, 'google': google, 'twitter': {'handle': twitter}, 'opengraph':True }
   
   # Symbols already used
   symbols = {}

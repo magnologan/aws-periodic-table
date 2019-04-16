@@ -1,0 +1,40 @@
+{{#opengraph}}
+  {{#opengraph.title}}
+      <meta property="og:title" content="{{opengraph.title}}"/>
+  {{/opengraph.title}}
+  {{^opengraph.title}}
+      {{#title}}
+          <meta property="og:title" content="{{title}}"/>
+      {{/title}}
+  {{/opengraph.title}}
+    
+  {{#opengraph.description}}
+      <meta property="og:description" content="{{opengraph.description}}"/>
+  {{/opengraph.description}}
+  {{^opengraph.description}}
+      {{#description}}
+          <meta property="og:description" content="{{description}}"/>
+      {{/description}}
+  {{/opengraph.description}}
+   
+  {{#opengraph.website}}
+      <meta property="og:type" content="website"/>
+      <meta property="og:url" content="{{opengraph.website}}"/>
+  {{/opengraph.website}}
+  {{^opengraph.website}}
+      <meta property="og:type" content="website"/>
+      {{#website}}
+          <meta property="og:url" content="{{website}}"/>
+      {{/website}}
+  {{/opengraph.website}}
+      
+  {{#opengraph.image}}
+      <meta property="og:image" content="{{opengraph.image}}"/>
+  {{/opengraph.image}}
+  {{^opengraph.image}}
+    {{#image}}
+          <meta property="og:image" content="{{image}}"/>
+    {{/image}}
+  {{/opengraph.image}}
+  
+{{/opengraph}}
