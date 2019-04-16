@@ -108,7 +108,7 @@ def create_symbol(symbols, name):
 
     return symbol
     
-title = "Jerry Hargrove | Periodic Table of Amazon Web Services"
+title = "Periodic Table of Amazon Web Services"
 description = "Periodic Table of Amazon Web Services"
 
 def lambda_handler(event, context):
