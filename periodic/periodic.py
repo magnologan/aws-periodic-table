@@ -110,14 +110,10 @@ def create_symbol(symbols, name):
     
 title = "Jerry Hargrove | Periodic Table of Amazon Web Services"
 description = "Periodic Table of Amazon Web Services"
-website = "https://www.awsgeek.com"
-image = "https://www.awsgeek.com/images/AWS-Periodic-Table.png"
-google = "UA-106486526-1"
-twitter = "@awsgeek"
 
 def lambda_handler(event, context):
 
-  periodic = {'categories':[], 'title':title, 'description':description, 'website':website, 'image': image, 'google': google, 'twitter': {'handle': twitter}, 'opengraph':True }
+  periodic = {'categories':[], 'title':title, 'description':description}
   
   # Symbols already used
   symbols = {}
