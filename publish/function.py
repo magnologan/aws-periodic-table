@@ -1,7 +1,5 @@
 # coding=utf-8
 import os, re, json, boto3, pystache
-
-from bs4 import BeautifulSoup
 from requests import get
 
 bucket = os.environ['bucket']
@@ -121,29 +119,27 @@ def lambda_handler(event, context):
   # Services already processed
   names = {}
   
+  url = event['Records'][0]['Sns']['Message']
+  aws_services = json.loads(get(url).text)
 
-  raw = get('https://aws.amazon.com/products/')
-  soup = BeautifulSoup(raw.content, 'html.parser')
-  
   ccount = 0
-  
-  # Scrape the producs page
-  for catitem in soup.select("div.lb-item-wrapper"):
-    cname = catitem.find("a").find("span", recursive=False).text.strip()
+
+  for section in aws_services['children']:  
+    
+    cname = section['name']
     cclass = re.sub(r"[&, ]",'',cname)
     category = {"name": cname, "services":[], "color": colors[ccount], "class":cclass}
     ccount = ccount + 1
-  
-    catservices = catitem.findAll("div", { "class" : "lb-content-item" })
-    for catservice in catservices:
-      name = catservice.find("a").find(text=True, recursive=False).strip()
+
+    for service in section['children']:
+      name = service['name']
       # Ignore duplicates on the page
       if name in names:
         continue
       names[name] = 1
       
-      desc = catservice.find("a").find("span", recursive=False).text.strip()
-      link = "https://aws.amazon.com" + catservice.find('a').attrs['href'].split("?")[0].strip()
+      desc = service['description']
+      link = service['link']
       
       prefix, name = parse_name(name)
       symbol = create_symbol(symbols, name)

@@ -4,12 +4,25 @@ Transform: AWS::Serverless-2016-10-31
 Parameters:
   Bucket:
     Type: String
+  
   Key:
+    Type: String
+    
+  Topic:
     Type: String
 
 Resources:
 
-  ProductScraperRole:
+  SharedDependenciesLayer:
+      Type: AWS::Serverless::LayerVersion
+      Properties:
+          LayerName: aws-services-scraper-shared-dependencies
+          ContentUri: shared/
+          CompatibleRuntimes:
+            - python2.7
+          RetentionPolicy: Retain
+
+  PublisherRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -25,7 +38,7 @@ Resources:
       Path: "/"
       Policies:
         -
-          PolicyName: ProfuctScraperPolicy
+          PolicyName: PublisherPolicy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -43,34 +56,32 @@ Resources:
                    - s3:PutObjectAcl
                 Resource: !Sub 'arn:aws:s3:::${Bucket}/${Key}' 
 
-  ProductScraper:
+  Publisher:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: periodic.lambda_handler
+      Handler: function.lambda_handler
       Runtime: python2.7
-      CodeUri: ./periodic
+      CodeUri: ./publish
+      Layers:
+        - !Ref SharedDependenciesLayer
       Timeout: 60
-      Role: !GetAtt [ProductScraperRole, Arn]
+      Role: !GetAtt [PublisherRole, Arn]
       Environment:
         Variables:
           bucket: !Ref Bucket
           key: !Ref Key
-
-  ProductScraperSchedule:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: ScheduledRule
-      ScheduleExpression: rate(1 day)
-      State: ENABLED
-      Targets:
-        -
-          Arn: !GetAtt [ProductScraper, Arn]
-          Id: TargetFunctionV1
-
-  ProductScraperInvokePermissions:
+ 
+  LambdaInvokePermission:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: !Ref ProductScraper
       Action: lambda:InvokeFunction
-      Principal: events.amazonaws.com
-      SourceArn: !GetAtt [ProductScraperSchedule, Arn]
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref Topic
+      FunctionName: !GetAtt Publisher.Arn
+      
+  TopicSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt Publisher.Arn 
+      Protocol: lambda
+      TopicArn: !Ref Topic      
